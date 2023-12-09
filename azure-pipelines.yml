@@ -1,0 +1,48 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+jobs:
+- job: Build
+  displayName: 'Build Docker Image'
+  steps:
+  - checkout: self
+    persistCredentials: true
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
+  - script: |
+      pip install -r requirements.txt
+      docker build -t docker-image-name .
+    displayName: 'Build Docker Image'
+
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'your-docker-registry-connection'
+      repository: 'docker-image-name'
+      command: 'push'
+      tags: 'latest'
+    displayName: 'Push Docker Image'
+
+- job: Deploy
+  displayName: 'Deploy to Azure'
+  dependsOn: Build
+  steps:
+  - checkout: self
+    persistCredentials: true
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
+  - script: |
+      pip install -r requirements.txt
+      terraform init
+      terraform apply -auto-approve
+    displayName: 'Terraform Apply'
