@@ -22,17 +22,19 @@ This project demonstrates a simple Flask application deployed to Azure using Ter
 3. Install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 4. Set up an [Azure DevOps](https://dev.azure.com/) account.
 
-### Development Setup
+### Development Setup with Docker Compose
 
 1. Clone the repository: `git clone https://github.com/yourusername/your-repo.git`
 2. Navigate to the project directory: `cd your-repo`
 3. Create a virtual environment (optional): `python -m venv venv`
-4. Activate the virtual environment: 
+4. Activate the virtual environment:
    - On Windows: `venv\Scripts\activate`
    - On macOS/Linux: `source venv/bin/activate`
 5. Install dependencies: `pip install -r requirements.txt`
-6. Run the Flask app locally: `python app.py`
-7. Access the app at `http://localhost:5000/live`.
+6. Start the application with PostgreSQL locally: `docker-compose up`
+7. Access the Flask app at `http://localhost:5000`.
+8. The PostgreSQL database will be available at `localhost:5432`.
+9. change database usr in app.py file with local database url
 
 ### Deployment to Azure
 
